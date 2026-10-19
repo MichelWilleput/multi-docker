@@ -1,0 +1,13 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - docker build -f Dockerfile.dev -t michelwilleput/complex-test ./client
+script:
+  - docker run -e CI=true michelwilleput/complex-test npm run test
+
+after_success:
+  - docker build -t michelwilleput/complex-client ./client
+  - docker build -t michelwilleput/complex-nginx ./nginx
+  - docker build -t michelwilleput/complex-server ./server
+  - docker build -t michelwilleput/complex-worker ./worker
